@@ -45,7 +45,7 @@ export default function Navbar() {
           </span>
         </Link>
 
-        {/* Desktop Navigation */}
+        {/*  Navigation */}
         <div className="hidden lg:flex items-center gap-3">
           {publicLinks.map((link) => {
             const active = pathname === link.href;
@@ -105,13 +105,12 @@ export default function Navbar() {
           </SignedOut>
 
           <SignedIn>
-            {/* Rounded gradient Border Around Avatar */}
             <div className="p-[3px] rounded-full bg-gradient-to-r from-sky-600 to-cyan-500 shadow-md shadow-sky-400/40">
               <UserButton
                 afterSignOutUrl="/"
                 appearance={{
                   elements: {
-                    avatarBox: "w-9 h-9",
+                    avatarBox: "w-12 h-12",
                   },
                 }}
               />
