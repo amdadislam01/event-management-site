@@ -134,7 +134,7 @@ const EventForm = () => {
 
         <button
           type="submit"
-          className="lg:col-span-2 bg-gradient-to-r from-[#0072FF] to-[#00C6FF] text-white font-semibold py-3 rounded-lg mt-4 hover:opacity-90 transition cursor-pointer"
+          className="lg:col-span-2 bg-linear-to-r from-[#0072FF] to-[#00C6FF] text-white font-semibold py-3 rounded-lg mt-4 hover:opacity-90 transition cursor-pointer"
         >
           Submit Event
         </button>

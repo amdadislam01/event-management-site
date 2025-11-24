@@ -67,7 +67,7 @@ export default function Navbar() {
 
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="p-2 bg-gradient-to-r from-sky-600 to-cyan-500 rounded-lg text-white">
+          <div className="p-2 bg-linear-to-r from-sky-600 to-cyan-500 rounded-lg text-white">
             <MdCelebration className="text-xl" />
           </div>
           <span className="font-extrabold text-xl text-gray-800 group-hover:text-sky-600 transition">
@@ -85,7 +85,7 @@ export default function Navbar() {
                 href={link.href}
                 className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-all ${
                   active
-                    ? "bg-gradient-to-r from-sky-600 to-cyan-500 text-white shadow"
+                    ? "bg-linear-to-r from-sky-600 to-cyan-500 text-white shadow"
                     : "text-gray-700 hover:bg-cyan-100/40 hover:text-sky-600"
                 }`}
               >
@@ -104,7 +104,7 @@ export default function Navbar() {
                   href={link.href}
                   className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-all ${
                     active
-                      ? "bg-gradient-to-r from-sky-600 to-cyan-500 text-white shadow"
+                      ? "bg-linear-to-r from-sky-600 to-cyan-500 text-white shadow"
                       : "text-gray-700 hover:bg-cyan-100/40 hover:text-sky-600"
                   }`}
                 >
@@ -119,7 +119,7 @@ export default function Navbar() {
         <div className="hidden lg:flex items-center gap-4">
           <SignedOut>
             <SignInButton mode="modal">
-              <button className="px-5 py-2 rounded-md font-medium text-white bg-gradient-to-r from-sky-600 to-cyan-500 hover:opacity-90 cursor-pointer">
+              <button className="px-5 py-2 rounded-md font-medium text-white bg-linear-to-r from-sky-600 to-cyan-500 hover:opacity-90 cursor-pointer">
                 Login
               </button>
             </SignInButton>
@@ -132,7 +132,7 @@ export default function Navbar() {
           </SignedOut>
 
           <SignedIn>
-            <div className="p-[3px] rounded-full bg-gradient-to-r from-sky-600 to-cyan-500 shadow-md shadow-sky-400/40">
+            <div className="p-[3px] rounded-full bg-linear-to-r from-sky-600 to-cyan-500 shadow-md shadow-sky-400/40">
               <UserButton
                 afterSignOutUrl="/"
                 appearance={{
@@ -164,7 +164,7 @@ export default function Navbar() {
                   onClick={() => setIsOpen(false)}
                   className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-all ${
                     active
-                      ? "bg-gradient-to-r from-sky-600 to-cyan-500 text-white shadow"
+                      ? "bg-linear-to-r from-sky-600 to-cyan-500 text-white shadow"
                       : "text-gray-700 hover:bg-cyan-100/40 hover:text-sky-600"
                   }`}
                 >
@@ -184,7 +184,7 @@ export default function Navbar() {
                     onClick={() => setIsOpen(false)}
                     className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-all ${
                       active
-                        ? "bg-gradient-to-r from-sky-600 to-cyan-500 text-white shadow"
+                        ? "bg-linear-to-r from-sky-600 to-cyan-500 text-white shadow"
                         : "text-gray-700 hover:bg-cyan-100/40 hover:text-sky-600"
                     }`}
                   >
@@ -199,7 +199,7 @@ export default function Navbar() {
               <SignInButton mode="modal">
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center justify-center px-4 py-2 rounded-md text-white bg-gradient-to-r from-sky-600 to-cyan-500 hover:opacity-90 cursor-pointer"
+                  className="flex items-center justify-center px-4 py-2 rounded-md text-white bg-linear-to-r from-sky-600 to-cyan-500 hover:opacity-90 cursor-pointer"
                 >
                   Login
                 </button>
@@ -217,7 +217,7 @@ export default function Navbar() {
 
             <SignedIn>
               <div className="flex justify-center py-2">
-                <div className="p-[3px] rounded-full bg-gradient-to-r from-sky-600 to-cyan-500 shadow-md shadow-sky-400/40">
+                <div className="p-[3px] rounded-full bg-linear-to-r from-sky-600 to-cyan-500 shadow-md shadow-sky-400/40">
                   <UserButton
                     afterSignOutUrl="/"
                     appearance={{ elements: { avatarBox: "w-9 h-9" } }}

@@ -51,6 +51,19 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+    // My Events API
+    app.get("/my-events", async (req, res) => {
+      const { userId, email } = req.query;
+
+      const query = {};
+
+      if (userId) query.userId = userId;
+      if (email) query.email = email;
+
+      const result = await eventCollection.find(query).toArray();
+      res.send(result);
+    });
+
     // Event Get API
     app.get("/events", async (req, res) => {
       const cursor = eventCollection.find();
