@@ -1,24 +1,54 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignUpButton,
-  UserButton,
-} from "@clerk/nextjs";
+import { useUser, SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 
 import { FaHome, FaBars, FaTimes, FaRegCalendarPlus } from "react-icons/fa";
 import { MdEventAvailable, MdCelebration, MdEventNote } from "react-icons/md";
 import { GiTicket } from "react-icons/gi";
+import Swal from "sweetalert2";
 
 export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const { user, isLoaded } = useUser();
+
+  useEffect(() => {
+  if (isLoaded && user) {
+    const alreadyShown = localStorage.getItem(`loginAlertShown_${user.id}`);
+    if (!alreadyShown) {
+      const saveUser = async () => {
+        const userData = {
+          userId: user.id,
+          name: user.fullName,
+          email: user.primaryEmailAddress?.emailAddress,
+          image: user.imageUrl,
+        };
+
+        try {
+          await fetch("http://localhost:5000/users", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(userData),
+          });
+          Swal.fire({
+            title: "Welcome!",
+            text: `Hello ${user.fullName}, you have logged in successfully!`,
+            icon: "success",
+            confirmButtonColor: "#0ea5e9",
+          });
+          localStorage.setItem(`loginAlertShown_${user.id}`, "true");
+        } catch (err) {
+          console.error("Error saving user:", err);
+        }
+      };
+      saveUser();
+    }
+  }
+}, [user, isLoaded]);
+
 
   const publicLinks = [
     { href: "/", label: "Home", icon: <FaHome /> },
@@ -45,7 +75,7 @@ export default function Navbar() {
           </span>
         </Link>
 
-        {/*  Navigation */}
+        {/* Desktop Navigation */}
         <div className="hidden lg:flex items-center gap-3">
           {publicLinks.map((link) => {
             const active = pathname === link.href;
@@ -65,7 +95,6 @@ export default function Navbar() {
             );
           })}
 
-          {/* Private Links (Signed In Only) */}
           <SignedIn>
             {privateLinks.map((link) => {
               const active = pathname === link.href;
@@ -87,9 +116,7 @@ export default function Navbar() {
           </SignedIn>
         </div>
 
-        {/* Auth Buttons  */}
         <div className="hidden lg:flex items-center gap-4">
-
           <SignedOut>
             <SignInButton mode="modal">
               <button className="px-5 py-2 rounded-md font-medium text-white bg-gradient-to-r from-sky-600 to-cyan-500 hover:opacity-90 cursor-pointer">
@@ -109,31 +136,25 @@ export default function Navbar() {
               <UserButton
                 afterSignOutUrl="/"
                 appearance={{
-                  elements: {
-                    avatarBox: "w-12 h-12",
-                  },
+                  elements: { avatarBox: "w-12 h-12" },
                 }}
               />
             </div>
           </SignedIn>
-
         </div>
 
-        {/* Mobile Menu Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="lg:hidden text-sky-700 text-2xl"
         >
           {isOpen ? <FaTimes /> : <FaBars />}
         </button>
-
       </nav>
 
-      {/* Mobile Dropdown Menu */}
+      {/* Mobile Menu */}
       {isOpen && (
         <div className="lg:hidden bg-white shadow-md">
           <div className="flex flex-col gap-1 px-4 py-4 border-t border-sky-400/30">
-
             {publicLinks.map((link) => {
               const active = pathname === link.href;
               return (
@@ -174,7 +195,6 @@ export default function Navbar() {
               })}
             </SignedIn>
 
-            {/* Mobile Auth */}
             <SignedOut>
               <SignInButton mode="modal">
                 <button
@@ -200,11 +220,7 @@ export default function Navbar() {
                 <div className="p-[3px] rounded-full bg-gradient-to-r from-sky-600 to-cyan-500 shadow-md shadow-sky-400/40">
                   <UserButton
                     afterSignOutUrl="/"
-                    appearance={{
-                      elements: {
-                        avatarBox: "w-9 h-9",
-                      },
-                    }}
+                    appearance={{ elements: { avatarBox: "w-9 h-9" } }}
                   />
                 </div>
               </div>
@@ -212,7 +228,6 @@ export default function Navbar() {
           </div>
         </div>
       )}
-
     </header>
   );
 }

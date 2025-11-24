@@ -1,21 +1,46 @@
 "use client";
 
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 
 const EventForm = () => {
   const { register, handleSubmit, reset } = useForm();
 
-   const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to add this event?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Add Event",
+      cancelButtonText: "Cancel",
+    });
+    if (!result.isConfirmed) {
+      return;
+    }
     fetch("http://localhost:5000/events", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
-    });
-
-    reset();
+    })
+      .then((res) => res.json())
+      .then(() => {
+        Swal.fire({
+          title: "Event Added!",
+          text: "Your event has been successfully created.",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+        reset(); 
+      })
+      .catch(() => {
+        Swal.fire({
+          title: "Error!",
+          text: "Something went wrong. Try again.",
+          icon: "error",
+        });
+      });
   };
-
   return (
     <div className="bg-white shadow-lg rounded-xl p-8 border border-gray-100">
       <h2 className="text-3xl font-bold text-center mb-10 text-[#0A66C2]">
@@ -26,32 +51,80 @@ const EventForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="grid grid-cols-1 lg:grid-cols-2 gap-6"
       >
-        <input {...register("title")} placeholder="Event Title" className="input-style" />
+        <input
+          {...register("title")}
+          placeholder="Event Title"
+          className="input-style"
+        />
 
-        <input {...register("category")} placeholder="Category" className="input-style" />
+        <input
+          {...register("category")}
+          placeholder="Category"
+          className="input-style"
+        />
 
-        <input {...register("location")} placeholder="Location" className="input-style" />
+        <input
+          {...register("location")}
+          placeholder="Location"
+          className="input-style"
+        />
 
-        <input {...register("venue")} placeholder="Venue" className="input-style" />
+        <input
+          {...register("venue")}
+          placeholder="Venue"
+          className="input-style"
+        />
 
         <input type="date" {...register("date")} className="input-style" />
 
         <div className="grid grid-cols-2 gap-4">
-          <input type="time" {...register("startTime")} className="input-style" />
+          <input
+            type="time"
+            {...register("startTime")}
+            className="input-style"
+          />
           <input type="time" {...register("endTime")} className="input-style" />
         </div>
 
-        <input type="number" {...register("price")} placeholder="Ticket Price" className="input-style" />
+        <input
+          type="number"
+          {...register("price")}
+          placeholder="Ticket Price"
+          className="input-style"
+        />
 
-        <input type="number" {...register("capacity")} placeholder="Total Seats" className="input-style" />
+        <input
+          type="number"
+          {...register("capacity")}
+          placeholder="Total Seats"
+          className="input-style"
+        />
 
-        <input type="number" {...register("availableSeats")} placeholder="Available Seats" className="input-style" />
+        <input
+          type="number"
+          {...register("availableSeats")}
+          placeholder="Available Seats"
+          className="input-style"
+        />
 
-        <input {...register("organizerName")} placeholder="Organizer Name" className="input-style" />
+        <input
+          {...register("organizerName")}
+          placeholder="Organizer Name"
+          className="input-style"
+        />
 
-        <input type="email" {...register("organizerEmail")} placeholder="Organizer Email" className="input-style" />
+        <input
+          type="email"
+          {...register("organizerEmail")}
+          placeholder="Organizer Email"
+          className="input-style"
+        />
 
-        <input {...register("image")} placeholder="Image URL" className="input-style" />
+        <input
+          {...register("image")}
+          placeholder="Image URL"
+          className="input-style"
+        />
 
         <select {...register("status")} className="input-style">
           <option value="Upcoming">Upcoming</option>

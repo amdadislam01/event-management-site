@@ -25,6 +25,24 @@ async function run() {
 
     const db = client.db("eventFlowDB");
     const eventCollection = db.collection("events");
+    const usersCollection = db.collection("users");
+
+    app.post("/users", async (req, res) => {
+      const user = req.body;
+
+      // Check if user already exists
+      const existingUser = await usersCollection.findOne({
+        userId: user.userId,
+      });
+
+      if (existingUser) {
+        return res.send({ message: "User already exists" });
+      }
+
+      user.createdAt = new Date();
+      const result = await usersCollection.insertOne(user);
+      res.send(result);
+    });
 
     // Event Create API
     app.post("/events", async (req, res) => {
