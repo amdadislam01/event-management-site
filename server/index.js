@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -50,6 +50,19 @@ async function run() {
         .limit(6);
       const result = await cursor.toArray();
       res.send(result);
+    });
+    // Event Get API
+    app.get("/events", async (req, res) => {
+      const cursor = eventCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+    // Event Get Details
+    app.get("/events/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const cursor = await eventCollection.findOne(query);
+      res.send(cursor);
     });
     // Event Create API
     app.post("/events", async (req, res) => {

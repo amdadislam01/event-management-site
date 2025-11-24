@@ -1,14 +1,13 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Loading from "./Loading";
+import Link from "next/link";
 
 const RecentEvents = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -73,12 +72,12 @@ const RecentEvents = () => {
                 </p>
               </div>
 
-              <button
-                onClick={() => router.push(`/events/${event._id}`)}
-                className="mt-auto px-6 py-3 rounded-xl font-semibold transition-colors duration-300 text-white bg-[#0069a8] hover:bg-[#0092b8] cursor-pointer"
+              <Link
+                href={`/all-events/${event._id}`}
+                className="mt-auto px-6 py-3 rounded-xl font-semibold text-center transition-colors duration-300 text-white bg-[#0069a8] hover:bg-[#0092b8] cursor-pointer"
               >
                 View Details
-              </button>
+              </Link>
             </div>
           </div>
         ))}
