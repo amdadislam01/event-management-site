@@ -68,13 +68,7 @@ const EventForm = () => {
           placeholder="Location"
           className="input-style"
         />
-
-        <input
-          {...register("venue")}
-          placeholder="Venue"
-          className="input-style"
-        />
-
+        
         <input type="date" {...register("date")} className="input-style" />
 
         <div className="grid grid-cols-2 gap-4">

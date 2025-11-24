@@ -24,26 +24,33 @@ async function run() {
     await client.connect();
 
     const db = client.db("eventFlowDB");
-    const eventCollection = db.collection("events");
     const usersCollection = db.collection("users");
+    const eventCollection = db.collection("events");
 
     app.post("/users", async (req, res) => {
       const user = req.body;
-
-      // Check if user already exists
       const existingUser = await usersCollection.findOne({
         userId: user.userId,
       });
-
       if (existingUser) {
         return res.send({ message: "User already exists" });
       }
-
       user.createdAt = new Date();
       const result = await usersCollection.insertOne(user);
       res.send(result);
     });
 
+    // Events API
+    app.get("/recent-event", async (req, res) => {
+      const cursor = eventCollection
+        .find()
+        .sort({
+          created_at: -1,
+        })
+        .limit(6);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
     // Event Create API
     app.post("/events", async (req, res) => {
       const event = req.body;
