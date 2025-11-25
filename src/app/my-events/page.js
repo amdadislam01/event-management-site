@@ -19,7 +19,7 @@ const MyEvents = () => {
     const fetchEvents = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/my-events?email=${encodeURIComponent(
+          `https://event-managment-serrver.vercel.app/my-events?email=${encodeURIComponent(
             userEmail
           )}`
         );
@@ -53,7 +53,7 @@ const MyEvents = () => {
 
     if (result.isConfirmed) {
       try {
-        const res = await fetch(`http://localhost:5000/events/${id}`, {
+        const res = await fetch(`https://event-managment-serrver.vercel.app/events/${id}`, {
           method: "DELETE",
         });
 

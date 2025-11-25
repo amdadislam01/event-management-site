@@ -4,7 +4,7 @@ import React from "react";
 const EventDetails = async ({ params }) => {
   const { id } = await params;
 
-  const res = await fetch(`http://localhost:5000/events/${id}`);
+  const res = await fetch(`https://event-managment-serrver.vercel.app/events/${id}`);
   const event = await res.json();
 
   return (

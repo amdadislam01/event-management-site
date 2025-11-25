@@ -12,7 +12,7 @@ const RecentEvents = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await fetch("http://localhost:5000/recent-event");
+        const res = await fetch("https://event-managment-serrver.vercel.app/recent-event");
         const data = await res.json();
         setEvents(data);
       } catch (error) {

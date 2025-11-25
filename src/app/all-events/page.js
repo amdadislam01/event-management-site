@@ -17,7 +17,7 @@ const EventsPage = () => {
     const fetchEvents = async () => {
       setLoading(true);
       try {
-        const res = await fetch("http://localhost:5000/events");
+        const res = await fetch("https://event-managment-serrver.vercel.app/events");
         const data = await res.json();
         setAllEvents(data);
         setFilteredEvents(data);
@@ -33,7 +33,7 @@ const EventsPage = () => {
   useEffect(() => {
     let filtered = allEvents;
 
-    if (category !== "All Events") {
+    if (category !== "All") {
       filtered = filtered.filter(
         (event) => event.category.toLowerCase() === category.toLowerCase()
       );
@@ -51,7 +51,7 @@ const EventsPage = () => {
   }, [searchTerm, category, allEvents]);
 
   // categories
-  const categories = ["All Events", ...new Set(allEvents.map((e) => e.category))];
+  const categories = ["All", ...new Set(allEvents.map((e) => e.category))];
 
   return (
     <div className="max-w-7xl mx-auto py-12 px-4">
