@@ -1,36 +1,199 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🌐 Event Management Platform
 
-## Getting Started
+A modern, full‑stack **Event Management Platform** built using the latest **Next.js 16**, **React 19**, **Clerk Authentication**, and a powerful **Express + MongoDB backend**. Designed for smooth event browsing, ticket booking, user dashboards, and secure authentication.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## ⭐ Overview
+
+This project aims to simplify event discovery and management. Users can:
+
+* Explore upcoming events
+* View event details
+* Buy tickets securely
+* Manage their own bookings
+* Access a fully protected dashboard
+
+Built with performance, scalability, and clean architecture in mind.
+
+---
+
+## 📦 Tech Stack
+
+### **Frontend (Next.js 16)**
+
+* ⚛️ **React 19** – Optimized UI
+* 🚀 **Next.js 16** – App Router, Server Components
+* 🔐 **Clerk** – Authentication & user management
+* 📝 **React Hook Form** – Super-fast form handling
+* 🎨 **React Icons** – Icon support
+* 🧊 **SweetAlert2** – Modern alert modals
+
+### **Backend (Node + Express)**
+
+* 🌐 **Express.js 5** – REST API
+* 🗄️ **MongoDB 7** – NoSQL database
+* 🔁 **CORS** – Secure communication
+* 🔑 **dotenv** – Environment configuration
+
+---
+
+## 🛠️ Project Structure
+
+```
+.
+├── .clerk/
+├── .next/
+├── public/
+├── server/
+│   ├── .vercel/
+│   ├── node_modules/
+│   ├── .env
+│   ├── index.js
+│   ├── package.json
+│   ├── package-lock.json
+│   └── src/
+│       ├── routes/
+│       ├── controllers/
+│       ├── models/
+│       └── config/
+├── src/
+│   ├── app/
+│   │   ├── all-events/
+│   │   ├── create-event/
+│   │   ├── my-events/
+│   │   ├── favicon.ico
+│   │   ├── globals.css
+│   │   ├── layout.js
+│   │   └── page.js
+│   ├── components/
+│   └── middleware.js
+├── .env
+├── next.config.mjs
+├── jsconfig.json
+├── eslint.config.mjs
+├── package.json
+└── postcss.config.mjs
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🔐 Authentication (Clerk)
+This project includes full authentication with Clerk:
+- Email/Password login
+- OAuth / Social login
+- Route protection (middleware)
+- User sessions & profile
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🚀 Getting Started
+### 1️⃣ Clone the repository
+```
 
-To learn more about Next.js, take a look at the following resources:
+git clone [https://github.com/amdadislam01/event-management-site.git](https://github.com/amdadislam01/event-management-site.git)
+cd event-management-site
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
+## ⚙️ Frontend Setup
+```
 
-## Deploy on Vercel
+cd frontend
+npm install
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+Create `.env.local`:
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_key
+CLERK_SECRET_KEY=your_clerk_secret
+NEXT_PUBLIC_API_URL=[http://localhost:5000](http://localhost:5000)
+
+```
+Run frontend:
+```
+
+npm run dev
+
+```
+
+---
+## ⚙️ Backend Setup
+```
+
+cd backend
+npm install
+
+```
+Create `.env`:
+```
+
+MONGO_URI=your_mongodb_url
+PORT=5000
+
+```
+Run backend:
+```
+
+npm start
+
+```
+
+---
+
+## 🧩 Main Features
+### **🌟 User Side**
+- Browse all events
+- See detailed event pages
+- Purchase tickets
+- Dashboard for purchased tickets
+
+### **🛠️ Developer Side**
+- Modern folder architecture
+- Clean reusable components
+- Secure API communication
+- Organized backend
+
+---
+
+## 📌 Backend API Endpoints
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /events | Get all events |
+| GET | /events/:id | Get single event |
+| POST | /tickets | Create a ticket |
+| GET | /tickets/:userId | Get tickets for a user |
+
+---
+
+## 🖼️ Screenshots
+_Add your UI screenshots here for a more polished README._
+
+---
+
+## 📄 Scripts
+### Frontend Scripts
+```
+
+npm run dev
+npm run build
+npm run start
+
+```
+### Backend Scripts
+```
+
+npm start
+
+```
+
+
+##  Author
+**MD. Amdad Islam**  
+MERN Stack Developer
+
+If you like this project, don't forget to ⭐ the repository!
+
+
