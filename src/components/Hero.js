@@ -19,7 +19,7 @@ export default function Hero() {
 
           <div className="flex flex-wrap gap-4 pt-4">
             <Link href="/all-events">
-            <button className="px-7 py-3 bg-gradient-to-r from-sky-600 to-cyan-500 text-white font-semibold rounded-xl shadow-md hover:opacity-90 transition-all cursor-pointer">
+            <button className="px-7 py-3 bg-linear-to-r from-sky-600 to-cyan-500 text-white font-semibold rounded-xl shadow-md hover:opacity-90 transition-all cursor-pointer">
               Explore Events
             </button>
             </Link>

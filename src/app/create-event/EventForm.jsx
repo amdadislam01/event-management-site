@@ -6,7 +6,12 @@ import Swal from "sweetalert2";
 
 const EventForm = () => {
   const { user } = useUser();
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   const onSubmit = async (data) => {
     const result = await Swal.fire({
@@ -17,9 +22,9 @@ const EventForm = () => {
       confirmButtonText: "Yes, Add Event",
       cancelButtonText: "Cancel",
     });
-    if (!result.isConfirmed) {
-      return;
-    }
+
+    if (!result.isConfirmed) return;
+
     fetch("https://event-managment-serrver.vercel.app/events", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -33,7 +38,7 @@ const EventForm = () => {
           icon: "success",
           confirmButtonText: "OK",
         });
-        reset(); 
+        reset();
       })
       .catch(() => {
         Swal.fire({
@@ -43,6 +48,7 @@ const EventForm = () => {
         });
       });
   };
+
   return (
     <div className="bg-white shadow-lg rounded-xl p-8 border border-gray-100">
       <h2 className="text-3xl font-bold text-center mb-10 text-[#0A66C2]">
@@ -53,93 +59,179 @@ const EventForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="grid grid-cols-1 lg:grid-cols-2 gap-6"
       >
-        <input
-          {...register("title")}
-          placeholder="Event Title"
-          className="input-style"
-        />
-
-        <input
-          {...register("category")}
-          placeholder="Category"
-          className="input-style"
-        />
-
-        <input
-          {...register("location")}
-          placeholder="Location"
-          className="input-style"
-        />
-        
-        <input type="date" {...register("date")} className="input-style" />
-
-        <div className="grid grid-cols-2 gap-4">
+        {/* Event Title */}
+        <div className="flex flex-col">
           <input
-            type="time"
-            {...register("startTime")}
+            {...register("title", { required: true })}
+            placeholder="Event Title"
             className="input-style"
           />
-          <input type="time" {...register("endTime")} className="input-style" />
+          {errors.title && <p className="error-text">Title is required</p>}
         </div>
 
-        <input
-          type="number"
-          {...register("price")}
-          placeholder="Ticket Price"
-          className="input-style"
-        />
+        {/* Category */}
+        <div className="flex flex-col">
+          <input
+            {...register("category", { required: true })}
+            placeholder="Category"
+            className="input-style"
+          />
+          {errors.category && (
+            <p className="error-text">Category is required</p>
+          )}
+        </div>
 
-        <input
-          type="number"
-          {...register("capacity")}
-          placeholder="Total Seats"
-          className="input-style"
-        />
+        {/* Location */}
+        <div className="flex flex-col">
+          <input
+            {...register("location", { required: true })}
+            placeholder="Location"
+            className="input-style"
+          />
+          {errors.location && (
+            <p className="error-text">Location is required</p>
+          )}
+        </div>
 
-        <input
-          type="number"
-          {...register("availableSeats")}
-          placeholder="Available Seats"
-          className="input-style"
-        />
+        {/* Date */}
+        <div className="flex flex-col">
+          <input
+            type="date"
+            {...register("date", { required: true })}
+            className="input-style"
+          />
+          {errors.date && <p className="error-text">Date is required</p>}
+        </div>
 
-        <input
-          {...register("organizerName")}
-          placeholder="Organizer Name"
-          className="input-style"
-        />
+        {/* Time */}
+        <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="flex flex-col">
+            <input
+              type="time"
+              {...register("startTime", { required: true })}
+              className="input-style"
+            />
+            {errors.startTime && (
+              <p className="error-text">Start time required</p>
+            )}
+          </div>
 
-        <input
-          type="email"
-          {...register("organizerEmail")}
-          placeholder="Organizer Email"
-          className="input-style"
-        />
+          <div className="flex flex-col">
+            <input
+              type="time"
+              {...register("endTime", { required: true })}
+              className="input-style"
+            />
+            {errors.endTime && <p className="error-text">End time required</p>}
+          </div>
+        </div>
 
-        <input
-          {...register("ownerEmail")}
-          defaultValue={user?.primaryEmailAddress?.emailAddress}
-          readOnly
-          className="input-style bg-gray-100 cursor-not-allowed"
-        />
+        {/* Price */}
+        <div className="flex flex-col">
+          <input
+            type="number"
+            {...register("price", { required: true })}
+            placeholder="Ticket Price"
+            className="input-style"
+          />
+          {errors.price && <p className="error-text">Price is required</p>}
+        </div>
 
-        <input
-          {...register("image")}
-          placeholder="Image URL"
-          className="input-style"
-        />
+        {/* Capacity */}
+        <div className="flex flex-col">
+          <input
+            type="number"
+            {...register("capacity", { required: true })}
+            placeholder="Total Seats"
+            className="input-style"
+          />
+          {errors.capacity && (
+            <p className="error-text">Capacity is required</p>
+          )}
+        </div>
 
-        <select {...register("status")} className="input-style">
-          <option value="Upcoming">Upcoming</option>
-          <option value="Ongoing">Ongoing</option>
-          <option value="Completed">Completed</option>
-        </select>
+        {/* Available Seats */}
+        <div className="flex flex-col">
+          <input
+            type="number"
+            {...register("availableSeats", { required: true })}
+            placeholder="Available Seats"
+            className="input-style"
+          />
+          {errors.availableSeats && (
+            <p className="error-text">Available seats required</p>
+          )}
+        </div>
 
-        <textarea
-          {...register("description")}
-          placeholder="Description"
-          className="input-style h-32 resize-none lg:col-span-2"
-        />
+        {/*  Name */}
+        <div className="flex flex-col">
+          <input
+            {...register("organizerName", { required: true })}
+            placeholder="Organizer Name"
+            className="input-style"
+          />
+          {errors.organizerName && (
+            <p className="error-text">Organizer name required</p>
+          )}
+        </div>
+
+        {/* Organizer Email */}
+        <div className="flex flex-col">
+          <input
+            type="email"
+            {...register("organizerEmail", { required: true })}
+            placeholder="Organizer Email"
+            className="input-style"
+          />
+          {errors.organizerEmail && (
+            <p className="error-text">Organizer email required</p>
+          )}
+        </div>
+
+        {/* Owner Email */}
+        <div className="flex flex-col">
+          <input
+            {...register("ownerEmail", { required: true })}
+            defaultValue={user?.primaryEmailAddress?.emailAddress}
+            readOnly
+            className="input-style bg-gray-100 cursor-not-allowed"
+          />
+        </div>
+
+        {/* Image */}
+        <div className="flex flex-col">
+          <input
+            {...register("image", { required: true })}
+            placeholder="Image URL"
+            className="input-style"
+          />
+          {errors.image && <p className="error-text">Image URL required</p>}
+        </div>
+
+        {/* Status */}
+        <div className="flex flex-col">
+          <select
+            {...register("status", { required: true })}
+            className="input-style"
+          >
+            <option value="Upcoming">Upcoming</option>
+            <option value="Ongoing">Ongoing</option>
+            <option value="Completed">Completed</option>
+          </select>
+          {errors.status && <p className="error-text">Status is required</p>}
+        </div>
+
+        {/* Description */}
+        <div className="flex flex-col lg:col-span-2">
+          <textarea
+            {...register("description", { required: true })}
+            placeholder="Description"
+            className="input-style h-32 resize-none"
+          />
+          {errors.description && (
+            <p className="error-text">Description is required</p>
+          )}
+        </div>
 
         <button
           type="submit"
