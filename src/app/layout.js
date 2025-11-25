@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <ClerkProvider>
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <body suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           <Navbar />
           <div className="min-h-[49vh]">
             {children}
@@ -35,4 +35,3 @@ export default function RootLayout({ children }) {
   );
 }
 
-// suppressHydrationWarning
