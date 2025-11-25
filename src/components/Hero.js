@@ -18,10 +18,11 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-wrap gap-4 pt-4">
-            <button className="px-7 py-3 bg-gradient-to-r from-sky-600 to-cyan-500 text-white font-semibold rounded-xl shadow-md hover:opacity-90 transition-all">
+            <Link href="/all-events">
+            <button className="px-7 py-3 bg-gradient-to-r from-sky-600 to-cyan-500 text-white font-semibold rounded-xl shadow-md hover:opacity-90 transition-all cursor-pointer">
               Explore Events
             </button>
-
+            </Link>
             <Link href="/create-event">
               <button className="px-7 py-3 border-2 border-sky-500 text-sky-600 font-semibold rounded-xl hover:bg-sky-50 transition-all cursor-pointer">
                 Create Event

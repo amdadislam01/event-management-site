@@ -3,11 +3,23 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useUser, SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
+import {
+  useUser,
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+} from "@clerk/nextjs";
 
 import { FaHome, FaBars, FaTimes, FaRegCalendarPlus } from "react-icons/fa";
-import { MdEventAvailable, MdCelebration, MdEventNote } from "react-icons/md";
-import { GiTicket } from "react-icons/gi";
+import {
+  MdEventAvailable,
+  MdCelebration,
+  MdEventNote,
+  MdOutlineEventNote,
+  MdEvent,
+} from "react-icons/md";
 import Swal from "sweetalert2";
 
 export default function Navbar() {
@@ -16,39 +28,38 @@ export default function Navbar() {
   const { user, isLoaded } = useUser();
 
   useEffect(() => {
-  if (isLoaded && user) {
-    const alreadyShown = localStorage.getItem(`loginAlertShown_${user.id}`);
-    if (!alreadyShown) {
-      const saveUser = async () => {
-        const userData = {
-          userId: user.id,
-          name: user.fullName,
-          email: user.primaryEmailAddress?.emailAddress,
-          image: user.imageUrl,
+    if (isLoaded && user) {
+      const alreadyShown = localStorage.getItem(`loginAlertShown_${user.id}`);
+      if (!alreadyShown) {
+        const saveUser = async () => {
+          const userData = {
+            userId: user.id,
+            name: user.fullName,
+            email: user.primaryEmailAddress?.emailAddress,
+            image: user.imageUrl,
+          };
+
+          try {
+            await fetch("http://localhost:5000/users", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(userData),
+            });
+            Swal.fire({
+              title: "Welcome!",
+              text: `Hello ${user.fullName}, you have logged in successfully!`,
+              icon: "success",
+              confirmButtonColor: "#0ea5e9",
+            });
+            localStorage.setItem(`loginAlertShown_${user.id}`, "true");
+          } catch (err) {
+            console.error("Error saving user:", err);
+          }
         };
-
-        try {
-          await fetch("http://localhost:5000/users", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(userData),
-          });
-          Swal.fire({
-            title: "Welcome!",
-            text: `Hello ${user.fullName}, you have logged in successfully!`,
-            icon: "success",
-            confirmButtonColor: "#0ea5e9",
-          });
-          localStorage.setItem(`loginAlertShown_${user.id}`, "true");
-        } catch (err) {
-          console.error("Error saving user:", err);
-        }
-      };
-      saveUser();
+        saveUser();
+      }
     }
-  }
-}, [user, isLoaded]);
-
+  }, [user, isLoaded]);
 
   const publicLinks = [
     { href: "/", label: "Home", icon: <FaHome /> },
@@ -57,14 +68,16 @@ export default function Navbar() {
 
   const privateLinks = [
     { href: "/my-events", label: "My Events", icon: <MdEventNote /> },
-    { href: "/my-tickets", label: "My Tickets", icon: <GiTicket /> },
-    { href: "/create-event", label: "Create Event", icon: <FaRegCalendarPlus /> },
+    {
+      href: "/create-event",
+      label: "Create Event",
+      icon: <FaRegCalendarPlus />,
+    },
   ];
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-md border-b border-sky-400/30">
       <nav className="max-w-7xl mx-auto flex items-center justify-between h-16 px-5">
-
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
           <div className="p-2 bg-linear-to-r from-sky-600 to-cyan-500 rounded-lg text-white">
@@ -133,12 +146,22 @@ export default function Navbar() {
 
           <SignedIn>
             <div className="p-[3px] rounded-full bg-linear-to-r from-sky-600 to-cyan-500 shadow-md shadow-sky-400/40">
-              <UserButton
-                afterSignOutUrl="/"
-                appearance={{
-                  elements: { avatarBox: "w-12 h-12" },
-                }}
-              />
+              <UserButton>
+                <UserButton.MenuItems>
+                  <UserButton.Link
+                    label="Create Event"
+                    labelIcon={<MdEvent />}
+                    href="/create-event"
+                  />
+                </UserButton.MenuItems>
+                <UserButton.MenuItems>
+                  <UserButton.Link
+                    label="Manage Events"
+                    labelIcon={<MdOutlineEventNote />}
+                    href="/my-events"
+                  />
+                </UserButton.MenuItems>
+              </UserButton>
             </div>
           </SignedIn>
         </div>
@@ -218,10 +241,22 @@ export default function Navbar() {
             <SignedIn>
               <div className="flex justify-center py-2">
                 <div className="p-[3px] rounded-full bg-linear-to-r from-sky-600 to-cyan-500 shadow-md shadow-sky-400/40">
-                  <UserButton
-                    afterSignOutUrl="/"
-                    appearance={{ elements: { avatarBox: "w-9 h-9" } }}
-                  />
+                  <UserButton>
+                    <UserButton.MenuItems>
+                      <UserButton.Link
+                        label="Create Event"
+                        labelIcon={<MdEvent />}
+                        href="/create-event"
+                      />
+                    </UserButton.MenuItems>
+                    <UserButton.MenuItems>
+                      <UserButton.Link
+                        label="Manage Events"
+                        labelIcon={<MdOutlineEventNote />}
+                        href="/my-events"
+                      />
+                    </UserButton.MenuItems>
+                  </UserButton>
                 </div>
               </div>
             </SignedIn>

@@ -43,7 +43,7 @@ async function run() {
     // Events API
     app.get("/recent-event", async (req, res) => {
       const cursor = eventCollection
-        .find()
+        .find({ status: "Upcoming" })
         .sort({
           created_at: -1,
         })
