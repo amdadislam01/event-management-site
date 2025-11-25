@@ -1,9 +1,11 @@
 "use client";
 
+import { useUser } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 
 const EventForm = () => {
+  const { user } = useUser();
   const { register, handleSubmit, reset } = useForm();
 
   const onSubmit = async (data) => {
@@ -112,6 +114,13 @@ const EventForm = () => {
           {...register("organizerEmail")}
           placeholder="Organizer Email"
           className="input-style"
+        />
+
+        <input
+          {...register("ownerEmail")}
+          defaultValue={user?.primaryEmailAddress?.emailAddress}
+          readOnly
+          className="input-style bg-gray-100 cursor-not-allowed"
         />
 
         <input

@@ -53,17 +53,19 @@ async function run() {
     });
     // My Events API
     app.get("/my-events", async (req, res) => {
-      const { userId, email } = req.query;
+      try {
+        const ownerEmail = req.query.email;
 
-      const query = {};
+        if (!ownerEmail) {
+          return res.status(400).send({ message: "Owner email is required" });
+        }
 
-      if (userId) query.userId = userId;
-      if (email) query.email = email;
-
-      const result = await eventCollection.find(query).toArray();
-      res.send(result);
+        const result = await eventCollection.find({ ownerEmail }).toArray();
+        res.send(result);
+      } catch (error) {
+        res.status(500).send({ message: "Server error", error });
+      }
     });
-
     // Event Get API
     app.get("/events", async (req, res) => {
       const cursor = eventCollection.find();
@@ -83,6 +85,13 @@ async function run() {
       // event Create Time
       event.createAt = new Date();
       const result = await eventCollection.insertOne(event);
+      res.send(result);
+    });
+    // Event Delete API
+    app.delete("/events/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await eventCollection.deleteOne(query);
       res.send(result);
     });
 
