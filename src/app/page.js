@@ -1,6 +1,7 @@
 import Features from "@/components/Features";
 import Hero from "@/components/Hero";
 import RecentEvents from "@/components/RecentEvents";
+import Testimonials from "@/components/Testimonials";
 
 
 export default function Home() {
@@ -9,6 +10,7 @@ export default function Home() {
       <Hero />
       <RecentEvents />
       <Features />
+      <Testimonials />
     </>
   );
 }
