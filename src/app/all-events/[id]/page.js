@@ -13,7 +13,6 @@ const EventDetails = async ({ params }) => {
   return (
     <div className="min-h-screen bg-[#f5faff] py-10 px-4 flex justify-center items-start">
       <div className="max-w-5xl w-full bg-white shadow-lg rounded-2xl overflow-hidden border border-[#0092b8]/20">
-        {/* IMAGE */}
         <div className="relative w-full h-[420px] overflow-hidden">
           <Link
             href="/all-events"
@@ -21,8 +20,7 @@ const EventDetails = async ({ params }) => {
           >
             ← Back
           </Link>
-
-          {/* IMAGE */}
+          {/* Image */}
           <Image
             src={event.image}
             alt={event.title}
