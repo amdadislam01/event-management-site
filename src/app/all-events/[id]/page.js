@@ -1,62 +1,28 @@
-"use client";
-
-import ProtectRoute from "@/components/ProtectRoute";
-import { useClerk, useUser } from "@clerk/nextjs";
 import Image from "next/image";
-import React, { use, useEffect, useState } from "react";
-import Loading from "../loading";
+import Link from "next/link";
+import React from "react";
 
-const EventDetails = ({ params }) => {
-  const { id } = use(params);
+const EventDetails = async ({ params }) => {
+  const { id } = await params;
 
-  const { user } = useUser();
-  const { openSignIn } = useClerk();
-
-  const [loading, setLoading] = useState(true);
-  const [event, setEvent] = useState(null);
-
-  // Event Data
-  useEffect(() => {
-    const fetchEvent = async () => {
-      try {
-        const res = await fetch(
-          `https://event-managment-serrver.vercel.app/events/${id}`
-        );
-        const data = await res.json();
-        setEvent(data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchEvent();
-  }, [id]);
-
-  useEffect(() => {
-    if (!user) {
-      const t = setTimeout(() => {
-        setLoading(false);
-      }, 500);
-
-      return () => clearTimeout(t);
-    }
-  }, [loading, user]);
-
-  if (!user) {
-    if (loading) {
-      return <Loading></Loading>;
-    }
-    openSignIn();
-    return <ProtectRoute />;
-  }
+  const res = await fetch(
+    `https://event-managment-serrver.vercel.app/events/${id}`
+  );
+  const event = await res.json();
 
   return (
     <div className="min-h-screen bg-[#f5faff] py-10 px-4 flex justify-center items-start">
       <div className="max-w-5xl w-full bg-white shadow-lg rounded-2xl overflow-hidden border border-[#0092b8]/20">
         {/* IMAGE */}
         <div className="relative w-full h-[420px] overflow-hidden">
+          <Link
+            href="/all-events"
+            className="absolute top-4 left-4 z-20 bg-cyan-100 text-gray-800 px-4 py-2 rounded-lg backdrop-blur-md shadow hover:bg-cyan-200 transition font-medium"
+          >
+            ← Back
+          </Link>
+
+          {/* IMAGE */}
           <Image
             src={event.image}
             alt={event.title}
@@ -78,16 +44,49 @@ const EventDetails = ({ params }) => {
             <p className="text-gray-600 mt-2">{event.description}</p>
           </div>
 
+          {/* GRID INFO */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
-            <Item label="Location" value={event.location} />
-            <Item label="Date" value={event.date} />
-            <Item
-              label="Time"
-              value={`${event.startTime} - ${event.endTime}`}
-            />
-            <Item label="Ticket Price" value={`৳ ${event.price}`} />
-            <Item label="Capacity" value={event.capacity} />
-            <Item label="Available Seats" value={event.availableSeats} />
+            <div className="bg-[#0092b8]/10 p-5 rounded-xl border border-[#0092b8]/20">
+              <p className="text-sm text-gray-500">Location</p>
+              <h2 className="text-lg font-semibold text-[#006aa9]">
+                {event.location}
+              </h2>
+            </div>
+
+            <div className="bg-[#0092b8]/10 p-5 rounded-xl border border-[#0092b8]/20">
+              <p className="text-sm text-gray-500">Date</p>
+              <h2 className="text-lg font-semibold text-[#006aa9]">
+                {event.date}
+              </h2>
+            </div>
+
+            <div className="bg-[#0092b8]/10 p-5 rounded-xl border border-[#0092b8]/20">
+              <p className="text-sm text-gray-500">Time</p>
+              <h2 className="text-lg font-semibold text-[#006aa9]">
+                {event.startTime} - {event.endTime}
+              </h2>
+            </div>
+
+            <div className="bg-[#0092b8]/10 p-5 rounded-xl border border-[#0092b8]/20">
+              <p className="text-sm text-gray-500">Ticket Price</p>
+              <h2 className="text-lg font-semibold text-[#006aa9]">
+                ৳ {event.price}
+              </h2>
+            </div>
+
+            <div className="bg-[#0092b8]/10 p-5 rounded-xl border border-[#0092b8]/20">
+              <p className="text-sm text-gray-500">Capacity</p>
+              <h2 className="text-lg font-semibold text-[#006aa9]">
+                {event.capacity}
+              </h2>
+            </div>
+
+            <div className="bg-[#0092b8]/10 p-5 rounded-xl border border-[#0092b8]/20">
+              <p className="text-sm text-gray-500">Available Seats</p>
+              <h2 className="text-lg font-semibold text-[#006aa9]">
+                {event.availableSeats}
+              </h2>
+            </div>
           </div>
 
           {/* ORGANIZER INFO */}
@@ -126,12 +125,5 @@ const EventDetails = ({ params }) => {
     </div>
   );
 };
-
-const Item = ({ label, value }) => (
-  <div className="bg-[#0092b8]/10 p-5 rounded-xl border border-[#0092b8]/20">
-    <p className="text-sm text-gray-500">{label}</p>
-    <h2 className="text-lg font-semibold text-[#006aa9]">{value}</h2>
-  </div>
-);
 
 export default EventDetails;
