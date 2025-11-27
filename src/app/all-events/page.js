@@ -80,6 +80,7 @@ const EventsPage = () => {
         </select>
       </div>
 
+
       {loading ? (
         <Loading />
       ) : filteredEvents.length === 0 ? (
