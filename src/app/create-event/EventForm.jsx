@@ -3,9 +3,13 @@
 import { useUser } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const EventForm = () => {
   const { user } = useUser();
+
   const {
     register,
     handleSubmit,
@@ -13,7 +17,16 @@ const EventForm = () => {
     formState: { errors },
   } = useForm();
 
+  const [eventDate, setEventDate] = useState(null);
+
   const onSubmit = async (data) => {
+    if (!eventDate) {
+      Swal.fire("Error", "Please select a valid date!", "error");
+      return;
+    }
+
+    data.date = eventDate.toISOString();
+    
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "Do you want to add this event?",
@@ -39,6 +52,7 @@ const EventForm = () => {
           confirmButtonText: "OK",
         });
         reset();
+        setEventDate(null);
       })
       .catch(() => {
         Swal.fire({
@@ -93,14 +107,17 @@ const EventForm = () => {
           )}
         </div>
 
-        {/* Date */}
+        {/* Date  */}
         <div className="flex flex-col">
-          <input
-            type="date"
-            {...register("date", { required: true })}
+          <DatePicker
+            selected={eventDate}
+            onChange={(date) => setEventDate(date)}
+            minDate={new Date()}
+            placeholderText="Select Event Date"
             className="input-style"
+            dateFormat="yyyy-MM-dd"
           />
-          {errors.date && <p className="error-text">Date is required</p>}
+          {!eventDate && <p className="error-text">Date is required</p>}
         </div>
 
         {/* Time */}
@@ -163,7 +180,7 @@ const EventForm = () => {
           )}
         </div>
 
-        {/*  Name */}
+        {/* Organizer Name */}
         <div className="flex flex-col">
           <input
             {...register("organizerName", { required: true })}
@@ -206,19 +223,6 @@ const EventForm = () => {
             className="input-style"
           />
           {errors.image && <p className="error-text">Image URL required</p>}
-        </div>
-
-        {/* Status */}
-        <div className="flex flex-col">
-          <select
-            {...register("status", { required: true })}
-            className="input-style"
-          >
-            <option value="Upcoming">Upcoming</option>
-            <option value="Ongoing">Ongoing</option>
-            <option value="Completed">Completed</option>
-          </select>
-          {errors.status && <p className="error-text">Status is required</p>}
         </div>
 
         {/* Description */}

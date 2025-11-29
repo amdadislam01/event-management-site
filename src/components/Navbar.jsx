@@ -13,6 +13,7 @@ import {
 } from "@clerk/nextjs";
 
 import { FaHome, FaBars, FaTimes, FaRegCalendarPlus } from "react-icons/fa";
+import { GiTicket } from "react-icons/gi";
 import {
   MdEventAvailable,
   MdCelebration,
@@ -68,6 +69,7 @@ export default function Navbar() {
 
   const privateLinks = [
     { href: "/my-events", label: "My Events", icon: <MdEventNote /> },
+    { href: "/ticket-booking", label: "My Ticket", icon: <GiTicket /> },
     {
       href: "/create-event",
       label: "Create Event",

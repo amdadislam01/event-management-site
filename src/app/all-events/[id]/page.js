@@ -1,18 +1,92 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import Swal from "sweetalert2";
+import { useClerk } from "@clerk/nextjs";
+import Loading from "../loading";
 
-const EventDetails = async ({ params }) => {
-  const { id } = await params;
+const EventDetails = () => {
+  const { id } = useParams();
+  const [event, setEvent] = useState(null);
+  const currentDate = new Date();
+  const {user} = useClerk();
 
-  const res = await fetch(
-    `https://event-managment-serrver.vercel.app/events/${id}`
-  );
-  const event = await res.json();
+  useEffect(() => {
+    const fetchEvent = async () => {
+      try {
+        const res = await fetch(
+          `https://event-managment-serrver.vercel.app/events/${id}`
+        );
+        const data = await res.json();
+        setEvent(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (id) fetchEvent();
+  }, [id]);
+
+  if (!event)
+    return <Loading />;
+
+  const eventDate = new Date(event.date);
+
+  const handleBookingSubmit = async () => {
+    const bookingData = {
+      eventId: event._id,
+      eventTitle: event.title,
+      eventImage: event.image,
+      eventDate: event.date,
+      startTime: event.startTime,
+      endTime: event.endTime,
+      price: event.price,
+      userEmail: user?.primaryEmailAddress?.emailAddress, 
+    };
+
+    try {
+      const res = await fetch(
+        "https://event-managment-serrver.vercel.app/booking-ticket",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(bookingData),
+        }
+      );
+
+      const result = await res.json();
+
+      if (res.ok) {
+        Swal.fire({
+          title: "Booked!",
+          text: "Your ticket has been successfully booked.",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+      } else {
+        Swal.fire({
+          title: "Failed!",
+          text: result.message || "Booking failed. Try again.",
+          icon: "error",
+        });
+      }
+    } catch (error) {
+      console.error("Booking error:", error);
+      Swal.fire({
+        title: "Error!",
+        text: "Something went wrong. Check console.",
+        icon: "error",
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#f5faff] py-10 px-4 flex justify-center items-start">
       <div className="max-w-5xl w-full bg-white shadow-lg rounded-2xl overflow-hidden border border-[#0092b8]/20">
+        {/* IMAGE */}
         <div className="relative w-full h-[420px] overflow-hidden">
           <Link
             href="/all-events"
@@ -20,7 +94,6 @@ const EventDetails = async ({ params }) => {
           >
             ← Back
           </Link>
-          {/* Image */}
           <Image
             src={event.image}
             alt={event.title}
@@ -54,7 +127,11 @@ const EventDetails = async ({ params }) => {
             <div className="bg-[#0092b8]/10 p-5 rounded-xl border border-[#0092b8]/20">
               <p className="text-sm text-gray-500">Date</p>
               <h2 className="text-lg font-semibold text-[#006aa9]">
-                {event.date}
+                {eventDate.toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })}
               </h2>
             </div>
 
@@ -102,20 +179,28 @@ const EventDetails = async ({ params }) => {
             </p>
           </div>
 
-          {/* STATUS */}
+          {/* STATUS & BOOK BUTTON */}
           <div className="mt-4 flex justify-between items-center">
             <span
-              className={`px-4 py-2 text-sm font-semibold rounded-full ${
-                event.status === "Upcoming"
-                  ? "bg-green-100 text-green-600"
-                  : "bg-red-100 text-red-600"
+              className={`px-4 py-2 w-max text-sm font-semibold rounded-full ${
+                eventDate > currentDate
+                  ? "bg-green-200 text-green-800"
+                  : "bg-gray-200 text-gray-800"
               }`}
             >
-              {event.status}
+              {eventDate > currentDate ? "Upcoming" : "Completed"}
             </span>
 
-            <button className="bg-[#006aa9] hover:bg-[#0092b8] transition text-white px-6 py-3 rounded-xl font-medium shadow-md">
-              Book Ticket
+            <button
+              onClick={handleBookingSubmit}
+              disabled={eventDate <= currentDate}
+              className={`px-6 py-3 rounded-xl font-medium shadow-md text-white transition cursor-pointer ${
+                eventDate > currentDate
+                  ? "bg-[#006aa9] hover:bg-[#0092b8]"
+                  : "bg-gray-400 cursor-not-allowed"
+              }`}
+            >
+              {eventDate > currentDate ? "Book Ticket" : "Completed"}
             </button>
           </div>
         </div>
