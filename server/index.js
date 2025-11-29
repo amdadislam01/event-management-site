@@ -26,6 +26,7 @@ async function run() {
     const db = client.db("eventFlowDB");
     const usersCollection = db.collection("users");
     const eventCollection = db.collection("events");
+    const bookingTicketCollection = db.collection("ticket");
 
     app.post("/users", async (req, res) => {
       const user = req.body;
@@ -84,6 +85,7 @@ async function run() {
       const event = req.body;
       // event Create Time
       event.createAt = new Date();
+      event.date = new Date(event.date);
       const result = await eventCollection.insertOne(event);
       res.send(result);
     });
@@ -92,6 +94,51 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await eventCollection.deleteOne(query);
+      res.send(result);
+    });
+    // Booking Ticket API
+    app.post("/booking-ticket", async (req, res) => {
+      try {
+        const { userEmail, eventId } = req.body;
+
+        if (!userEmail || !eventId) {
+          return res
+            .status(400)
+            .json({ message: "Email and Event ID are required." });
+        }
+        const existingBooking = await bookingTicketCollection.findOne({
+          userEmail: userEmail,
+          eventId: eventId,
+        });
+
+        if (existingBooking) {
+          return res
+            .status(400)
+            .json({ message: "You have already booked this ticket." });
+        }
+        const result = await bookingTicketCollection.insertOne(req.body);
+        res.status(201).json({ message: "Booking successful", result });
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error" });
+      }
+    });
+
+    // Ticket Get
+    app.get('/booking', async(req,res) => {
+      const email = req.query.email;
+      const query = {};
+      if (email) {
+        query.userEmail = email
+      }
+      const result = await bookingTicketCollection.find(query).toArray();
+      res.send(result)
+    })
+    // Ticket Delete
+    app.delete("/booking/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await bookingTicketCollection.deleteOne(query);
       res.send(result);
     });
 
