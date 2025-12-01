@@ -1,4 +1,5 @@
 # 🌐 Event Management Platform
+
 A modern, full‑stack **Event Management Platform** built using the latest **Next.js 16**, **React 19**, **Clerk Authentication**, and a powerful **Express + MongoDB backend**. Designed for smooth event browsing, ticket booking, user dashboards, and secure authentication.
 
 ---
