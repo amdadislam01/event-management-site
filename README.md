@@ -4,7 +4,6 @@ A modern, full‑stack **Event Management Platform** built using the latest **Ne
 
 ---
 
-
 ## ⭐ Overview
 
 This project aims to simplify event discovery and management. Users can:
