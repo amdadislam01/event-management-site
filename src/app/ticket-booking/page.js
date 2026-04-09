@@ -1,18 +1,19 @@
 "use client";
 
-import { useClerk, useUser } from "@clerk/nextjs";
+import { useSession, signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 const MyBookingsPage = () => {
-  const { user, isLoaded } = useUser();
-  const { openSignIn } = useClerk();
+  const { data: session, status } = useSession();
+  const user = session?.user;
+  const isLoaded = status !== "loading";
   const [events, setEvents] = useState([]);
   const currentDate = new Date();
 
-  const userEmail = user?.primaryEmailAddress?.emailAddress?.toLowerCase();
+  const userEmail = user?.email?.toLowerCase();
 
   useEffect(() => {
     if (!userEmail) return;
@@ -20,7 +21,7 @@ const MyBookingsPage = () => {
     const fetchEvents = async () => {
       try {
         const res = await fetch(
-          `https://event-managment-serrver.vercel.app/booking?email=${encodeURIComponent(userEmail)}`
+          `/api/booking?email=${encodeURIComponent(userEmail)}`
         );
         const data = await res.json();
         setEvents(data);
@@ -34,7 +35,7 @@ const MyBookingsPage = () => {
 
   if (!isLoaded) return null;
   if (!user) {
-    openSignIn();
+    signIn("google");
     return null;
   }
 
@@ -53,7 +54,7 @@ const MyBookingsPage = () => {
 
     if (result.isConfirmed) {
       try {
-        const res = await fetch(`https://event-managment-serrver.vercel.app/booking/${id}`, {
+        const res = await fetch(`/api/booking/${id}`, {
           method: "DELETE",
         });
 
