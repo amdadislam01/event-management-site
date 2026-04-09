@@ -1,10 +1,11 @@
 "use client";
 
-import { useSession, signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import ProtectRoute from "@/components/ProtectRoute";
 
 const MyBookingsPage = () => {
   const { data: session, status } = useSession();
@@ -35,8 +36,7 @@ const MyBookingsPage = () => {
 
   if (!isLoaded) return null;
   if (!user) {
-    signIn("google");
-    return null;
+    return <ProtectRoute />;
   }
 
   // My Events Delete
