@@ -17,7 +17,7 @@ const EventsPage = () => {
     const fetchEvents = async () => {
       setLoading(true);
       try {
-        const res = await fetch("https://event-managment-serrver.vercel.app/events");
+        const res = await fetch("/api/events");
         const data = await res.json();
         setAllEvents(data);
         setFilteredEvents(data);
