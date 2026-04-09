@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSession, signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import Swal from "sweetalert2";
+import ProtectRoute from "@/components/ProtectRoute";
 
 const MyEvents = () => {
   const { data: session, status } = useSession();
@@ -35,8 +36,7 @@ const MyEvents = () => {
 
   if (!isLoaded) return null;
   if (!user) {
-    signIn("google");
-    return null;
+    return <ProtectRoute />;
   }
   // My Events Delete
   const handleDelete = async (id) => {
@@ -207,14 +207,14 @@ const MyEvents = () => {
             {events.map((event) => (
               <div
                 key={event._id}
-                className="bg-white shadow-md rounded-lg overflow-hidden border border-gray-300"
+                className="bg-white shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 rounded-lg overflow-hidden border border-gray-300 group"
               >
-                <div className="relative w-full h-40 sm:h-48">
+                <div className="relative w-full h-40 sm:h-48 overflow-hidden">
                   <Image
                     src={event.image}
                     alt={event.title}
                     fill
-                    className="object-cover"
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                 </div>
                 <div className="p-4 flex flex-col gap-2">
