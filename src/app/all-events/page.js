@@ -92,14 +92,14 @@ const EventsPage = () => {
           {filteredEvents.map((event) => (
             <div
               key={event._id}
-              className="bg-white shadow-md hover:shadow-xl rounded-2xl overflow-hidden border border-gray-200 transition-all duration-300 flex flex-col"
+              className="bg-white shadow-md hover:shadow-xl hover:-translate-y-2 rounded-2xl overflow-hidden border border-gray-200 transition-all duration-300 flex flex-col group"
             >
-              <div className="relative w-full h-52 md:h-60 lg:h-64">
+              <div className="relative w-full h-52 md:h-60 lg:h-64 overflow-hidden">
                 <Image
                   src={event.image}
                   alt={event.title}
                   fill
-                  className="object-cover w-full h-full"
+                  className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
                 />
               </div>
 
