@@ -16,9 +16,7 @@ const EditEvent = () => {
 
   useEffect(() => {
     if (status === "loading") return;
-    
     if (!user) {
-      signIn("google");
       return;
     }
 
