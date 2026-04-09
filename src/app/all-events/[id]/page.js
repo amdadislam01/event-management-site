@@ -5,20 +5,21 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import Swal from "sweetalert2";
-import { useClerk } from "@clerk/nextjs";
+import { useSession } from "next-auth/react";
 import Loading from "../loading";
 
 const EventDetails = () => {
   const { id } = useParams();
   const [event, setEvent] = useState(null);
   const currentDate = new Date();
-  const {user} = useClerk();
+  const { data: session } = useSession();
+  const user = session?.user;
 
   useEffect(() => {
     const fetchEvent = async () => {
       try {
         const res = await fetch(
-          `https://event-managment-serrver.vercel.app/events/${id}`
+          `/api/events/${id}`
         );
         const data = await res.json();
         setEvent(data);
@@ -44,12 +45,12 @@ const EventDetails = () => {
       startTime: event.startTime,
       endTime: event.endTime,
       price: event.price,
-      userEmail: user?.primaryEmailAddress?.emailAddress, 
+      userEmail: user?.email, 
     };
 
     try {
       const res = await fetch(
-        "https://event-managment-serrver.vercel.app/booking-ticket",
+        "/api/booking",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
