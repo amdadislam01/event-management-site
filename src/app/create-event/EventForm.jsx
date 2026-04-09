@@ -1,6 +1,6 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
+import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { useState } from "react";
@@ -8,7 +8,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const EventForm = () => {
-  const { user } = useUser();
+  const { data: session } = useSession();
+  const user = session?.user;
 
   const {
     register,
@@ -38,7 +39,7 @@ const EventForm = () => {
 
     if (!result.isConfirmed) return;
 
-    fetch("https://event-managment-serrver.vercel.app/events", {
+    fetch("/api/events", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -209,7 +210,7 @@ const EventForm = () => {
         <div className="flex flex-col">
           <input
             {...register("ownerEmail", { required: true })}
-            defaultValue={user?.primaryEmailAddress?.emailAddress}
+            defaultValue={user?.email}
             readOnly
             className="input-style bg-gray-100 cursor-not-allowed"
           />
