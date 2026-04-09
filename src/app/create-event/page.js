@@ -26,7 +26,6 @@ const CreateEvent = () => {
   }
 
   if (!user) {
-    signIn("google");
     return <ProtectRoute />;
   }
   return (
