@@ -8,21 +8,21 @@ const Testimonials = () => {
       name: "MD Amdad Islam",
       role: "Event Organizer",
       feedback:
-        "This platform made managing my events incredibly easy and professional!",
+        "Honestly, this platform is a lifesaver! I managed my entire wedding guest list without any stress. Highly recommend it to everyone!",
       avatar: "https://avatars.githubusercontent.com/u/195456266?v=4",
     },
     {
       name: "MD Zahidul Islam",
       role: "Attendee",
       feedback:
-        "Booking tickets was seamless, and I loved the analytics features for events.",
+        "The booking process was so fast! I got my tickets in seconds and the interface is super easy to use. Love it!",
       avatar: "https://avatars.githubusercontent.com/u/92626624?v=4",
     },
     {
       name: "Md Riyaz Akondo",
       role: "Corporate Client",
       feedback:
-        "The event scheduling and attendee tracking saved us hours of work.",
+        "We used this for our annual office party and the attendee tracking was perfect. No more messy spreadsheets for us!",
       avatar: "https://avatars.githubusercontent.com/u/209346122?v=4",
     },
   ];
