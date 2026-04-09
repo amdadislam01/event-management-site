@@ -1,0 +1,41 @@
+if (process.env.NEXT_RUNTIME === "edge") {
+  throw new Error("MongoDB cannot be used in the Edge Runtime.");
+}
+import { MongoClient, ServerApiVersion } from "mongodb";
+
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.cewig2g.mongodb.net/?appName=Cluster0`;
+
+let client;
+let clientPromise;
+
+if (!process.env.DB_USER || !process.env.DB_PASS) {
+  throw new Error("Please add your Mongo URI to .env");
+}
+
+if (process.env.NODE_ENV === "development") {
+  // In development mode, use a global variable so that the value
+  // is preserved across module reloads caused by HMR (Hot Module Replacement).
+  if (!global._mongoClientPromise) {
+    client = new MongoClient(uri, {
+      serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+      },
+    });
+    global._mongoClientPromise = client.connect();
+  }
+  clientPromise = global._mongoClientPromise;
+} else {
+  // In production mode, it's best to not use a global variable.
+  client = new MongoClient(uri, {
+    serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true,
+    },
+  });
+  clientPromise = client.connect();
+}
+
+export default clientPromise;
