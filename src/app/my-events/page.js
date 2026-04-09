@@ -182,9 +182,12 @@ const MyEvents = () => {
                         >
                           View
                         </Link>
-                        <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md text-sm transition cursor-pointer">
+                        <Link
+                          href={`/my-events/edit/${event._id}`}
+                          className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md text-sm transition cursor-pointer"
+                        >
                           Edit
-                        </button>
+                        </Link>
                         <button
                           onClick={() => handleDelete(event._id)}
                           className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md text-sm transition cursor-pointer"
@@ -254,9 +257,12 @@ const MyEvents = () => {
                     >
                       View
                     </Link>
-                    <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md text-sm transition">
+                    <Link
+                      href={`/my-events/edit/${event._id}`}
+                      className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md text-sm transition"
+                    >
                       Edit
-                    </button>
+                    </Link>
                     <button
                       onClick={() => handleDelete(event._id)}
                       className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md text-sm transition"
