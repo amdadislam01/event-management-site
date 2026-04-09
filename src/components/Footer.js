@@ -1,3 +1,6 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import { MdCelebration } from "react-icons/md";
 import {
   FaFacebookF,
@@ -7,6 +10,12 @@ import {
 } from "react-icons/fa";
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  if (pathname === "/login" || pathname === "/register") {
+    return null;
+  }
+
   return (
     <footer className="bg-gradient-to-r from-sky-700 to-cyan-600 text-white pt-16 pb-8 relative">
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between gap-12">
