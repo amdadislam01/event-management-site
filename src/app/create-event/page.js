@@ -3,29 +3,30 @@
 import React, { useEffect, useState } from "react";
 import EventForm from "./EventForm";
 import ProtectRoute from "@/components/ProtectRoute";
-import { useClerk, useUser } from "@clerk/nextjs";
+import { useSession, signIn } from "next-auth/react";
 import Loading from "../all-events/loading";
 
 const CreateEvent = () => {
-  const { user } = useUser();
-  const { openSignIn } = useClerk();
+  const { data: session, status } = useSession();
+  const user = session?.user;
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) {
+    if (status === "loading" || !user) {
       const t = setTimeout(() => {
         setLoading(false);
       }, 500);
 
       return () => clearTimeout(t);
     }
-  }, [loading, user]);
+  }, [loading, user, status]);
+
+  if (status === "loading" || (loading && !user)) {
+    return <Loading></Loading>;
+  }
 
   if (!user) {
-    if (loading) {
-      return <Loading></Loading>;
-    }
-    openSignIn();
+    signIn("google");
     return <ProtectRoute />;
   }
   return (
