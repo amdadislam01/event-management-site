@@ -1,18 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useClerk, useUser } from "@clerk/nextjs";
+import { useSession, signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import Swal from "sweetalert2";
 
 const MyEvents = () => {
-  const { user, isLoaded } = useUser();
-  const { openSignIn } = useClerk();
+  const { data: session, status } = useSession();
+  const user = session?.user;
+  const isLoaded = status !== "loading";
   const [events, setEvents] = useState([]);
   const currentDate = new Date();
 
-  const userEmail = user?.primaryEmailAddress?.emailAddress?.toLowerCase();
+  const userEmail = user?.email?.toLowerCase();
 
   useEffect(() => {
     if (!userEmail) return;
@@ -20,9 +21,7 @@ const MyEvents = () => {
     const fetchEvents = async () => {
       try {
         const res = await fetch(
-          `https://event-managment-serrver.vercel.app/my-events?email=${encodeURIComponent(
-            userEmail
-          )}`
+          `/api/events/my?email=${encodeURIComponent(userEmail)}`
         );
         const data = await res.json();
         setEvents(data);
@@ -36,7 +35,7 @@ const MyEvents = () => {
 
   if (!isLoaded) return null;
   if (!user) {
-    openSignIn();
+    signIn("google");
     return null;
   }
   // My Events Delete
@@ -55,7 +54,7 @@ const MyEvents = () => {
     if (result.isConfirmed) {
       try {
         const res = await fetch(
-          `https://event-managment-serrver.vercel.app/events/${id}`,
+          `/api/events/${id}`,
           {
             method: "DELETE",
           }
