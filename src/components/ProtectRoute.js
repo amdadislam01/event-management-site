@@ -1,10 +1,8 @@
-"use client";
-import { useClerk } from "@clerk/nextjs";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React from "react";
 
 const ProtectRoute = () => {
-  const { openSignIn } = useClerk();
   const router = useRouter();
 
   return (
@@ -24,7 +22,7 @@ const ProtectRoute = () => {
           Home
         </button>
         <button
-          onClick={openSignIn}
+          onClick={() => signIn("google")}
           className="px-8 py-3 bg-cyan-600 hover:bg-cyan-700 text-white rounded-xl shadow-lg transition-all duration-300 text-lg md:text-xl"
         >
           Sign In
